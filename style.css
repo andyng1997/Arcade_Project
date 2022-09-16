@@ -1,0 +1,26 @@
+.box{
+    border: 2px solid;
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 0 2px;
+    font-size: 70px;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 200px;
+    margin: auto;
+    
+}
+
+#gameContainer {
+    font-family: cursive;
+    text-align: center;
+}
+

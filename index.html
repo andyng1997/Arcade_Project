@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tic-Tac-Toe</title>
+    <script defer src="app.js"></script>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>Let's Play Tic-Tac-Toe!</h1>
+        <form>
+            <label>Player 1</label><br>
+            <input type="text" id="player1Name" name="player1Name" placeholder="Player 1"><br>
+            <label>Player 2</label><br>
+            <input type="text" id="player2Name" name="player2Name" placeholder="Player 2"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <h2 id="gameStatus"></h2>
+        <div id="gameBoard">
+            <div boxIndex="0" class="box"></div>
+            <div boxIndex="1" class="box"></div>
+            <div boxIndex="2" class="box"></div>
+            <div boxIndex="3" class="box"></div>
+            <div boxIndex="4" class="box"></div>
+            <div boxIndex="5" class="box"></div>
+            <div boxIndex="6" class="box"></div>
+            <div boxIndex="7" class="box"></div>
+            <div boxIndex="8" class="box"></div>
+        </div>
+
+          
+
+        <button id="reset">Reset</button>
+    </div>    
+</body>
+</html>
