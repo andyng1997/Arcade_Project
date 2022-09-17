@@ -44,6 +44,7 @@ state.active = false;
 
 //*******************************************************************Functions******************************************
 //function to get the names of the players from the submission form
+//in a player vs player, if you leave one of the forms for player 1 or 2 empty, the default name will be either player 1 or player 2
 function getPlayerNames () {    
     state.form.addEventListener("submit", function (e) {
     e.preventDefault() // This prevents the window from reloading
@@ -51,9 +52,23 @@ function getPlayerNames () {
     let formdata = new FormData(this);
     state.player1Name = formdata.get("player1Name");
     state.player2Name = formdata.get("player2Name");
-
-    state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
-    });
+    if (state.player1Name == ""){
+        state.player1Name = "Player 1";
+        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+    }
+    else {state.player1Name == formdata.get("player1Name")
+        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+    }
+   
+    if (state.player2Name == ""){
+        state.player2Name = "Player 2";
+        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+    }
+    else {state.player2Name == formdata.get("player1Name")
+        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+        } 
+    }
+    )
 };
 initializeGame();
 //need function to initialize game
@@ -63,8 +78,12 @@ initializeGame();
 function initializeGame(){
     state.active = true;
     getPlayerNames();
+    if (state.player2Name == "Player 2") {
+        computerMove();
+    }
     state.box.forEach(box => box.addEventListener("click", boxClicked));
     state.reset.addEventListener("click", restartGame);
+
 }
 
 
@@ -101,10 +120,10 @@ function updateBox (box, index) {
 function changePlayer() {
     state.currentPlayer = (state.currentPlayer == state.player1) ? state.player2 : state.player1;
     if (state.currentPlayer == state.player1){
-        gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
         return;
     }
-    else {gameStatus.textContent = `It is ${state.player2Name}'s turn`
+    else {state.gameStatus.textContent = `It is ${state.player2Name}'s turn`
         return;
     }
   
@@ -151,8 +170,27 @@ function checkWinner() {
     }
 }
 
-
-
+//
+function computerMove() {
+    let state.board=[
+        '', '', '',
+        '', '', '',
+        '', '', ''
+        ];
+    let random;
+    cells.forEach(function(cell){
+      if (cell.textContent == '') {
+        emptyCells.push(cell);
+      }
+    });
+    
+    // computer marks a random EMPTY cell
+    random = Math.ceil(Math.random() * emptyCells.length) - 1;
+    emptyCells[random].textContent = mark;
+    checkRow();
+    switchMark();
+  }
+  
 
 
 
