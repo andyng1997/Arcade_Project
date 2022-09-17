@@ -14,9 +14,10 @@
 
 
 // ********************************************************** Global Variables***************************************** 
-const box = document.querySelectorAll(".box");
-const gameStatus = document.querySelector("#gameStatus");
-const reset = document.querySelector("#reset");
+const state = {};
+state.box = document.querySelectorAll(".box");
+state.gameStatus = document.querySelector("#gameStatus");
+state.reset = document.querySelector("#reset");
 const winningCombos = [
     [0, 1, 2],
     [0, 3, 6],
@@ -27,30 +28,45 @@ const winningCombos = [
     [3, 4, 5],
     [6, 7, 8],
     ];
-let board = [
+state.board = [
     '', '', '',
     '', '', '',
     '', '', ''
     ];
-let currentPlayer = "X";
-let active = false;
-// const playerTurnElem = document.querySelector ("#playerTurn");
-// ^ this is for adding player turn later
+state.currentPlayer = "X";
+state.player1 = "X";
+state.player2 = "O";
+state.form = document.querySelector(".nameForm");
+state.player1Name= "Player 1";
+state.player2Name= "Player 2";
+state.active = false;
 
 
 //*******************************************************************Functions******************************************
+//function to get the names of the players from the submission form
+function getPlayerNames () {    
+    state.form.addEventListener("submit", function (e) {
+    e.preventDefault() // This prevents the window from reloading
+    
+    let formdata = new FormData(this);
+    state.player1Name = formdata.get("player1Name");
+    state.player2Name = formdata.get("player2Name");
 
+    state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+    });
+};
 initializeGame();
 //need function to initialize game
 //for each box, add event listener that listens for a click and invokes the funcion "boxClicked"
 //update status of game in game status box whose turn is it or if they won.
 //also need to make the game state active.
 function initializeGame(){
-    active = true;
-    box.forEach(box => box.addEventListener("click", boxClicked));
-    reset.addEventListener("click", resetGame);
-    gameStatus.textContent = `It is ${currentPlayer}'s turn`;
+    state.active = true;
+    getPlayerNames();
+    state.box.forEach(box => box.addEventListener("click", boxClicked));
+    state.reset.addEventListener("click", restartGame);
 }
+
 
 
 //obtain index number of each box with getAttribute, using "this" will refer to the individual box that was clicked on.
@@ -59,29 +75,42 @@ function initializeGame(){
 //check winner after each box is clicked.
 function boxClicked() {
     const boxIndex = this.getAttribute("boxIndex");
-    if (board[boxIndex] != '' || !active) {
-        console.log("if statement");
+    if (state.board[boxIndex] != '' || !state.active) {
+        // console.log("if statement");
         return; 
         ;
     }
     else {updateBox(this, boxIndex)
-         console.log("else statement")};
+        //  console.log("else statement")};
     checkWinner();
-    console.log("clicked");
+;
 }
+
+
 
 //take the board at a certain box = to "X" for now I set it to X. Get game working first then add player names after.
 function updateBox (box, index) {
-    box.textContent += currentPlayer 
-    board[index] = currentPlayer;
-    console.log(currentPlayer);
+    box.textContent += state.currentPlayer; 
+    state.board[index] = state.currentPlayer;
 }
+}
+
+
 
 //Take current player, if current player is equal to "X", re-assign current player to "O", otherwise "X"
 function changePlayer() {
-    currentPlayer = (currentPlayer =="X") ? "O" : "X";
-    gameStatus.textContent = `It is ${currentPlayer}'s turn`
+    state.currentPlayer = (state.currentPlayer == state.player1) ? state.player2 : state.player1;
+    if (state.currentPlayer == state.player1){
+        gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+        return;
+    }
+    else {gameStatus.textContent = `It is ${state.player2Name}'s turn`
+        return;
+    }
+  
 } 
+
+
 
 //loop through win conditions, store each win condition into variables and loop through them to check for win conditions.
 //if there is no spaces left on board need to make a tie. if no one has won and there is still empty boxes, continue game.
@@ -89,9 +118,9 @@ function checkWinner() {
  let gameWon = false; 
     for (let i = 0; i<winningCombos.length; i++) {
         const condition = winningCombos[i];
-        const boxA= board[condition[0]];
-        const boxB= board[condition[1]];
-        const boxC= board[condition[2]];
+        const boxA= state.board[condition[0]];
+        const boxB= state.board[condition[1]];
+        const boxC= state.board[condition[2]];
 //if boxA, boxB, or boxC has an empty space, continue game.
         if(boxA == '' || boxB == '' || boxC == ''){
             continue;
@@ -102,30 +131,40 @@ function checkWinner() {
             break;
         }
     }
-
 //if the game has been won, display who won the game. 
     if (gameWon) {
-        gameStatus.textContent = `${currentPlayer} has won the game!`
-        active=false
+        if(state.currentPlayer == state.player1)
+        {state.gameStatus.textContent = `${state.player1Name} has won the game! Reset to play again`;
+        }
+        else(state.gameStatus.textContent = `${state.player2Name} has won the game! Reset to play again`)
+
+        state.active=false
     }
 //if there are no empty spaces on the board, it is a tie and make the game inactive.    
-    else if (!board.includes('')) {
-        gameStatus.textContent = `It's a tie! Please reset the game and try again.`;
-        running = false
+    else if (!state.board.includes('')) {
+        state.gameStatus.textContent = `It's a tie! Please reset the game and try again.`;
+        state.active = false;
     }
 //if there are empty spaces and the winning conditions have not been met, change player and continue.
     else {
         changePlayer();
     }
 }
-function resetGame() {
-    currentPlayer = "X";
-    board = [
+
+
+
+
+
+
+//Function for resetting game without refreshing browser.
+function restartGame() {
+    state.currentPlayer = "X";
+    state.board = [
         '', '', '',
         '', '', '',
         '', '', ''
         ];
-    gameStatus.textContent = `Game has been reset it is ${currentPlayer}'s turn`;
-    box.forEach(box => box.textContent='');
-    active = true;
+    state.gameStatus.textContent = `Game has been reset it is ${state.player1Name}'s turn`;
+    state.box.forEach(box => box.textContent='');
+    state.active = true;
 }

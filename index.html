@@ -11,14 +11,15 @@
 <body>
     <div id="gameContainer">
         <h1>Let's Play Tic-Tac-Toe!</h1>
-        <form>
+        <h3>If you would like to play versus a computer, leave player 2 name empty.</h3>
+        <form class="nameForm">
             <label>Player 1</label><br>
-            <input type="text" id="player1Name" name="player1Name" placeholder="Player 1"><br>
+            <input type="text" id="player1Name" name="player1Name" placeholder="Player 1" value=""><br>
             <label>Player 2</label><br>
-            <input type="text" id="player2Name" name="player2Name" placeholder="Player 2"><br><br>
+            <input type="text" id="player2Name" name="player2Name" placeholder="Player 2" value=""><br><br>
             <input type="submit" value="Submit">
         </form>
-        <h2 id="gameStatus"></h2>
+        <h2 id="gameStatus">It is currently Player 1's turn</h2>
         <div id="gameBoard">
             <div boxIndex="0" class="box"></div>
             <div boxIndex="1" class="box"></div>
@@ -30,9 +31,6 @@
             <div boxIndex="7" class="box"></div>
             <div boxIndex="8" class="box"></div>
         </div>
-
-          
-
         <button id="reset">Reset</button>
     </div>    
 </body>
