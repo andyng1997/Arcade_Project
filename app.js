@@ -172,23 +172,12 @@ function checkWinner() {
 
 //
 function computerMove() {
-    let state.board=[
-        '', '', '',
-        '', '', '',
-        '', '', ''
-        ];
-    let random;
-    cells.forEach(function(cell){
-      if (cell.textContent == '') {
-        emptyCells.push(cell);
-      }
-    });
+
     
     // computer marks a random EMPTY cell
     random = Math.ceil(Math.random() * emptyCells.length) - 1;
     emptyCells[random].textContent = mark;
-    checkRow();
-    switchMark();
+    checkWinner();
   }
   
 
