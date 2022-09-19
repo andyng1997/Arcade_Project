@@ -33,7 +33,6 @@ state.board = [
     '', '', '',
     '', '', ''
     ];
-var cells;
 state.currentPlayer = "X";
 state.player1 = "X";
 state.player2 = "O";
