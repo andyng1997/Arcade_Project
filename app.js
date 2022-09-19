@@ -33,22 +33,36 @@ state.board = [
     '', '', '',
     '', '', ''
     ];
+var cells;
 state.currentPlayer = "X";
 state.player1 = "X";
 state.player2 = "O";
+state.computer = "O";
 state.form = document.querySelector(".nameForm");
 state.player1Name= "Player 1";
 state.player2Name= "Player 2";
 state.active = false;
 
-
 //*******************************************************************Functions******************************************
+
+initializeGame();
+//need function to initialize game
+//for each box, add event listener that listens for a click and invokes the funcion "boxClicked"
+//update status of game in game status box whose turn is it or if they won.
+//also need to make the game state active.
+function initializeGame(){
+    state.active = true;
+    getPlayerNames();
+    state.box.forEach(box => box.addEventListener("click", boxClicked));
+    state.reset.addEventListener("click", restartGame);
+}
+
 //function to get the names of the players from the submission form
 //in a player vs player, if you leave one of the forms for player 1 or 2 empty, the default name will be either player 1 or player 2
 function getPlayerNames () {    
     state.form.addEventListener("submit", function (e) {
     e.preventDefault() // This prevents the window from reloading
-    
+
     let formdata = new FormData(this);
     state.player1Name = formdata.get("player1Name");
     state.player2Name = formdata.get("player2Name");
@@ -59,31 +73,16 @@ function getPlayerNames () {
     else {state.player1Name == formdata.get("player1Name")
         state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
     }
-   
+
     if (state.player2Name == ""){
-        state.player2Name = "Player 2";
+        state.player2Name = "Computer";
         state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
     }
-    else {state.player2Name == formdata.get("player1Name")
+    else {state.player2Name == formdata.get("player2Name")
         state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
         } 
     }
     )
-};
-initializeGame();
-//need function to initialize game
-//for each box, add event listener that listens for a click and invokes the funcion "boxClicked"
-//update status of game in game status box whose turn is it or if they won.
-//also need to make the game state active.
-function initializeGame(){
-    state.active = true;
-    getPlayerNames();
-    if (state.player2Name == "Player 2") {
-        computerMove();
-    }
-    state.box.forEach(box => box.addEventListener("click", boxClicked));
-    state.reset.addEventListener("click", restartGame);
-
 }
 
 
@@ -97,37 +96,65 @@ function boxClicked() {
     if (state.board[boxIndex] != '' || !state.active) {
         // console.log("if statement");
         return; 
-        ;
+        
     }
-    else {updateBox(this, boxIndex)
+
+    //I wanted it here to see that if the player 2 name was "Computer", to call the computerMove function. However when I tested it, it had called the function and the function ran when tested in console.log but it would not change the textContent of the HTML.
+    // else if (state.player2Name= "Computer") {
+    //     updateBox(this, boxIndex);
+    //     computerMove();
+    // }
+   
+    else (updateBox(this, boxIndex))
         //  console.log("else statement")};
     checkWinner();
-;
 }
+
+
 
 
 
 //take the board at a certain box = to "X" for now I set it to X. Get game working first then add player names after.
 function updateBox (box, index) {
+
     box.textContent += state.currentPlayer; 
     state.board[index] = state.currentPlayer;
 }
-}
+
+
+//I tried really hard to make this work but nothing was working and the more I tried, the more it broke the rest of my code...
+//I attempted to essentially try to make it loop through the array and if it encountered an array that was empty, to replace it with an "O" to simulate the computer playing.
+// function computerMove() {
+//     for(let i=0; i<state.box.length; i++) {
+//         if (state.box.innerHTML =='') {
+//             state.box.innerHTML += 'O';
+//             console.log("check for if loop");
+//             continue;
+//         }
+//         else (state.box.innerHTML += 'O')
+//         break;
+//     }
+//     checkWinner();
+// }
+ 
+
+
 
 
 
 //Take current player, if current player is equal to "X", re-assign current player to "O", otherwise "X"
 function changePlayer() {
-    state.currentPlayer = (state.currentPlayer == state.player1) ? state.player2 : state.player1;
-    if (state.currentPlayer == state.player1){
-        state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
-        return;
-    }
-    else {state.gameStatus.textContent = `It is ${state.player2Name}'s turn`
-        return;
-    }
-  
-} 
+        state.currentPlayer = (state.currentPlayer == state.player1) ? state.player2 : state.player1;
+        if (state.currentPlayer == state.player1){
+            state.gameStatus.textContent = `It is ${state.player1Name}'s turn`;
+            return;
+        }
+        else {state.gameStatus.textContent = `It is ${state.player2Name}'s turn`
+            return;
+        }
+
+    } 
+
 
 
 
@@ -153,9 +180,9 @@ function checkWinner() {
 //if the game has been won, display who won the game. 
     if (gameWon) {
         if(state.currentPlayer == state.player1)
-        {state.gameStatus.textContent = `${state.player1Name} has won the game! Reset to play again`;
+        {state.gameStatus.textContent = `${state.player1Name} has won the game! Hit the reset button to play again!`;
         }
-        else(state.gameStatus.textContent = `${state.player2Name} has won the game! Reset to play again`)
+        else(state.gameStatus.textContent = `${state.player2Name} has won the game! Hit the reset button to play again!`)
 
         state.active=false
     }
@@ -168,20 +195,7 @@ function checkWinner() {
     else {
         changePlayer();
     }
-}
-
-//
-function computerMove() {
-
-    
-    // computer marks a random EMPTY cell
-    random = Math.ceil(Math.random() * emptyCells.length) - 1;
-    emptyCells[random].textContent = mark;
-    checkWinner();
-  }
-  
-
-
+    }
 
 //Function for resetting game without refreshing browser.
 function restartGame() {
