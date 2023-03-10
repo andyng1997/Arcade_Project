@@ -16,14 +16,6 @@ h1, h3 {
     text-align: center;
 }
 
-#gameBoard {
-    display: grid;
-    text-align: center;
-    grid-template-columns: repeat(3, auto);
-    width: 200px;
-    margin: auto;
-    
-}
 
 #gameContainer {
     font-family: cursive;

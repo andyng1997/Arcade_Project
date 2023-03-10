@@ -7,11 +7,35 @@
     <link rel="stylesheet" href="style.css">
     <title>Tic-Tac-Toe</title>
     <script defer src="app.js"></script>
+    <style>
+        .gameContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+    
+        .gameBoard {
+          display: grid;
+          grid-template-columns: repeat(3, 100px);
+          justify-content: center;
+          align-items: center;
+        }
+    
+        .box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 5em;
+          color: #fff;
+          cursor: pointer;
+        }
+      </style>
 </head>
 <body>
     <div id="gameContainer">
         <h1>Let's Play Tic-Tac-Toe!</h1>
-        <h3>If you would like to play versus a computer, leave player 2 name empty.</h3>
+        <h3>If you would like to play versus a computer, type computer into player 2 form and submit.</h3>
         <form class="nameForm">
             <label>Player 1 (X)</label><br>
             <input type="text" id="player1Name" name="player1Name" placeholder="Player 1" value=""><br>
@@ -20,7 +44,7 @@
             <input type="submit" value="Submit" class="button">
         </form>
         <h2 id="gameStatus">It is currently Player 1's turn</h2>
-        <div id="gameBoard">
+        <div class="gameBoard">
             <div boxIndex="0" class="box"></div>
             <div boxIndex="1" class="box"></div>
             <div boxIndex="2" class="box"></div>
